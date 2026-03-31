@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lapis Lazuli - Joyería Artesanal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #29669e;
+            --soft-blue: #75b4c4;
+            --pearl-white: #dcf2f3;
+            --warm-white: #b6eaf3;
+            --soft-gray: #E5E7EB;
+            --medium-gray: #9CA3AF;
+            --dark-gray: #4B5563;
+            --charcoal: #1F2937;
+            --lapis-blue: #1E3A8A;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--warm-white) 0%, var(--pearl-white) 50%, var(--soft-blue) 100%);
+            background-attachment: fixed;
+            color: var(--charcoal);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(68, 164, 177, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(175, 203, 255, 0.3);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--lapis-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: "💎";
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover {
+            background: var(--soft-blue);
+            color: var(--charcoal);
+        }
+
+        .cart-btn {
+            background: var(--primary-blue);
+            color: rgba(211, 220, 223, 0.979);
+            padding: 0.6rem 1.2rem;
+        }
+
+        .cart-btn:hover {
+            background: #43aaaa;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--lapis-blue);
+            color: rgb(199, 109, 109);
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .cart-count.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Horizontal Scroll Products Section (Replaces Carousel) */
+        .featured-section {
+            margin-bottom: 3rem;
+            padding: 1rem 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--charcoal);
+        }
+
+        .scroll-hint {
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .horizontal-scroll {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 1rem;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            cursor: grab;
+        }
+
+        .horizontal-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .horizontal-scroll:active {
+            cursor: grabbing;
+        }
+
+        .featured-card {
+            flex: 0 0 auto;
+            width: 300px;
+            scroll-snap-align: start;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(175, 203, 255, 0.2);
+        }
+
+        .featured-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(175, 203, 255, 0.25);
+        }
+
+        .featured-image-container {
+            position: relative;
+            height: 280px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--soft-blue) 0%, var(--pearl-white) 100%);
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .featured-card:hover .featured-image {
+            transform: scale(1.05);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(30, 58, 138, 0.9);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .featured-info {
+            padding: 1.5rem;
+        }
+
+        .featured-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--charcoal);
+            margin-bottom: 0.3rem;
+        }
+
+        .featured-price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--lapis-blue);
+            margin-bottom: 1rem;
+        }
+
+        .featured-btn {
+            width: 100%;
+            background: var(--charcoal);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .featured-btn:hover {
+            background: var(--primary-blue);
+        }
+
+        /* All Products Grid */
+        .products-section {
+            margin-bottom: 3rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 1px solid rgba(175, 203, 255, 0.2);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(175, 203, 255, 0.25);
+        }
+
+        .product-image-container {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--soft-blue) 0%, var(--pearl-white) 100%);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.08);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-type {
+            font-size: 0.85rem;
+            color: var(--medium-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--charcoal);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--lapis-blue);
+        }
+
+        /* Compact Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 25px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.3);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-image-section {
+            background: linear-gradient(135deg, var(--soft-blue) 0%, var(--pearl-white) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: 15px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .modal-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .modal-header {
+            margin-bottom: 0.8rem;
+        }
+
+        .modal-type {
+            font-size: 0.75rem;
+            color: var(--medium-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--charcoal);
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-price {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--lapis-blue);
+        }
+
+        .modal-description {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .compact-controls {
+            background: var(--pearl-white);
+            padding: 1rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .quantity-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+        }
+
+        .quantity-label {
+            font-size: 0.85rem;
+            color: var(--medium-gray);
+            font-weight: 500;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .qty-btn {
+            width: 35px;
+            height: 35px;
+            border: 2px solid var(--soft-gray);
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            color: var(--charcoal);
+        }
+
+        .qty-btn:hover {
+            border-color: var(--primary-blue);
+            background: var(--soft-blue);
+        }
+
+        .quantity-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--soft-gray);
+        }
+
+        .total-label {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+
+        .total-amount {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--lapis-blue);
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .btn-primary {
+            background: var(--lapis-blue);
+            color: white;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--charcoal);
+            transform: translateY(-2px);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            max-width: 100%;
+            height: 100%;
+            background: white;
+            box-shadow: -10px 0 50px rgba(0, 0, 0, 0.1);
+            z-index: 2001;
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--soft-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--pearl-white);
+        }
+
+        .cart-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--charcoal);
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .cart-close:hover {
+            background: var(--soft-blue);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 3rem;
+            color: var(--medium-gray);
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--pearl-white);
+            border-radius: 15px;
+            margin-bottom: 0.8rem;
+        }
+
+        .cart-item-image {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .cart-item-price {
+            color: var(--lapis-blue);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-qty {
+            font-size: 0.8rem;
+            color: var(--medium-gray);
+        }
+
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: var(--medium-gray);
+            cursor: pointer;
+            align-self: center;
+            padding: 0.5rem;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--soft-gray);
+            background: var(--pearl-white);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .cart-total-amount {
+            font-weight: 700;
+            color: var(--lapis-blue);
+        }
+
+        .cart-checkout-btn {
+            width: 100%;
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cart-checkout-btn:hover {
+            background: #128C7E;
+        }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--charcoal);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+            }
+
+            main {
+                padding: 1rem;
+                margin-top: 70px;
+            }
+
+            .featured-card {
+                width: 260px;
+            }
+
+            .featured-image-container {
+                height: 240px;
+            }
+
+            .modal {
+                grid-template-columns: 1fr;
+                max-height: 95vh;
+            }
+
+            .modal-image-section {
+                padding: 1rem;
+                max-height: 200px;
+            }
+
+            .modal-image {
+                max-height: 180px;
+            }
+
+            .modal-content {
+                padding: 1.2rem;
+            }
+
+            .modal-title {
+                font-size: 1.3rem;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .featured-card {
+                width: 240px;
+            }
+            
+            .modal-description {
+                display: none; /* Hide description on very small screens to keep compact */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#" class="logo">Lapis Lazuli</a>
+        <div class="nav-links">
+            <button class="nav-btn" onclick="scrollToProducts()">
+                <span>Productos</span>
+                📿
+            </button>
+            <button class="nav-btn cart-btn" onclick="toggleCart()" style="position: relative;">
+                <span>Carrito</span>
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Featured Products - Horizontal Scroll -->
+        <section class="featured-section">
+            <div class="section-header">
+                <h2 class="section-title">Destacados</h2>
+                <span class="scroll-hint">← Desliza →</span>
+            </div>
+            <div class="horizontal-scroll" id="featuredScroll">
+                <div class="featured-card" onclick="openModal(0)">
+                    <div class="featured-image-container">
+                        <span class="featured-badge">Nuevo</span>
+                        <img src="imagenes/c1.jpg" alt="Dije Corazón Playa" class="featured-image">
+                    </div>
+                    <div class="featured-info">
+                        <h3 class="featured-name">Dije Corazón Playa</h3>
+                        <div class="featured-price">$45.000</div>
+                        <button class="featured-btn">Ver Detalles</button>
+                    </div>
+                </div>
+                <div class="featured-card" onclick="openModal(1)">
+                    <div class="featured-image-container">
+                        <span class="featured-badge">Popular</span>
+                        <img src="imagenes/c2.jpg" alt="Collar Zorro" class="featured-image">
+                    </div>
+                    <div class="featured-info">
+                        <h3 class="featured-name">Collar Zorro</h3>
+                        <div class="featured-price">$65.000</div>
+                        <button class="featured-btn">Ver Detalles</button>
+                    </div>
+                </div>
+                <div class="featured-card" onclick="openModal(2)">
+                    <div class="featured-image-container">
+                        <span class="featured-badge">Exclusivo</span>
+                        <img src="imagenes/c3.jpg" alt="Collar Mandala" class="featured-image">
+                    </div>
+                    <div class="featured-info">
+                        <h3 class="featured-name">Collar Mandala</h3>
+                        <div class="featured-price">$85.000</div>
+                        <button class="featured-btn">Ver Detalles</button>
+                    </div>
+                </div>
+                <div class="featured-card" onclick="openModal(3)">
+                    <div class="featured-image-container">
+                        <img src="imagenes/c4.jpg" alt="Dije Caballito" class="featured-image">
+                    </div>
+                    <div class="featured-info">
+                        <h3 class="featured-name">Dije Caballito</h3>
+                        <div class="featured-price">$55.000</div>
+                        <button class="featured-btn">Ver Detalles</button>
+                    </div>
+                </div>
+                <div class="featured-card" onclick="openModal(4)">
+                    <div class="featured-image-container">
+                        <span class="featured-badge">Oferta</span>
+                        <img src="imagenes/c5.jpg" alt="Collar Pez" class="featured-image">
+                    </div>
+                    <div class="featured-info">
+                        <h3 class="featured-name">Collar Pez Tropical</h3>
+                        <div class="featured-price">$60.000</div>
+                        <button class="featured-btn">Ver Detalles</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- All Products -->
+        <section class="products-section" id="products">
+            <div class="section-header" style="justify-content: center; margin-bottom: 2rem;">
+                <h2 class="section-title">Todos los Productos</h2>
+            </div>
+            <div class="products-grid" id="productsGrid"></div>
+        </section>
+    </main>
+
+    <!-- Compact Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="modal-image-section">
+                <img src="" alt="" class="modal-image" id="modalImage">
+            </div>
+            <div class="modal-content">
+                <div>
+                    <div class="modal-header">
+                        <div class="modal-type" id="modalType">Collar</div>
+                        <h2 class="modal-title" id="modalTitle"></h2>
+                        <div class="modal-price" id="modalPrice"></div>
+                    </div>
+                    <p class="modal-description" id="modalDescription"></p>
+                </div>
+                
+                <div>
+                    <div class="compact-controls">
+                        <div class="quantity-row">
+                            <span class="quantity-label">Cantidad</span>
+                            <div class="quantity-controls">
+                                <button class="qty-btn" onclick="changeQuantity(-1)">−</button>
+                                <span class="quantity-value" id="quantityValue">1</span>
+                                <button class="qty-btn" onclick="changeQuantity(1)">+</button>
+                            </div>
+                        </div>
+                        <div class="total-row">
+                            <span class="total-label">Total</span>
+                            <span class="total-amount" id="totalAmount">$0</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="btn-primary" onclick="addToCartFromModal()">
+                            🛒 Agregar al Carrito
+                        </button>
+                        <button class="btn-whatsapp" onclick="buyNowWhatsApp()">
+                            📱 Pedir por WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart -->
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3 class="cart-title">🛍️ Tu Carrito</h3>
+            <button class="cart-close" onclick="toggleCart()">×</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🛒</div>
+                <p>Tu carrito está vacío</p>
+            </div>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="cart-total-amount" id="cartTotal">$0</span>
+            </div>
+            <button class="cart-checkout-btn" onclick="checkoutWhatsApp()">
+                📱 Comprar por WhatsApp
+            </button>
+            <div style="text-align: center; margin-top: 0.8rem;">
+                <button onclick="clearCart()" style="background: none; border: none; color: var(--medium-gray); font-size: 0.85rem; cursor: pointer; text-decoration: underline;">
+                    Vaciar carrito
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/573136846940?text=Hola Lapis Lazuli, quiero información" class="whatsapp-float" target="_blank">
+        💬
+    </a>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">Producto agregado ✓</div>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "Dije Corazón Playa",
+                price: 45000,
+                image: "imagenes/c1.jpg",
+                type: "Dije",
+                description: "Dije artesanal con diseño de corazón en tonos marrones, blancos y rojos. Hecho a mano con mostacilla de alta calidad."
+            },
+            {
+                id: 2,
+                name: "Collar Zorro Artesanal",
+                price: 65000,
+                image: "imagenes/c2.jpg",
+                type: "Collar",
+                description: "Encantador collar con dije de zorro en mostacilla. Diseño único que combina colores neutros con toques de naranja."
+            },
+            {
+                id: 3,
+                name: "Collar Mandala Real",
+                price: 85000,
+                image: "imagenes/c3.jpg",
+                type: "Collar",
+                description: "Espectacular collar tipo mandala en tonos azul rey, turquesa y dorado. Pieza de autor para ocasiones especiales."
+            },
+            {
+                id: 4,
+                name: "Dije Caballito de Mar",
+                price: 55000,
+                image: "imagenes/c4.jpg",
+                type: "Dije",
+                description: "Delicado dije de caballito de mar en tonos dorados y marrones. Presentado en elegante caja de regalo."
+            },
+            {
+                id: 5,
+                name: "Collar Pez Tropical",
+                price: 60000,
+                image: "imagenes/c5.jpg",
+                type: "Collar",
+                description: "Colorido collar con dije de pez en azul turquesa, negro y dorado. Incluye collar de mostacilla a juego."
+            }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('lapisLazuliCart')) || [];
+        let currentModalProduct = null;
+        let currentQuantity = 1;
+
+        // Drag to scroll functionality
+        const slider = document.getElementById('featuredScroll');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            slider.style.cursor = 'grabbing';
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+
+        slider.addEventListener('mouseleave', () => {
+            isDown = false;
+            slider.style.cursor = 'grab';
+        });
+
+        slider.addEventListener('mouseup', () => {
+            isDown = false;
+            slider.style.cursor = 'grab';
+        });
+
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2;
+            slider.scrollLeft = scrollLeft - walk;
+        });
+
+        // Touch events for mobile
+        slider.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        }, {passive: true});
+
+        slider.addEventListener('touchmove', (e) => {
+            const x = e.touches[0].pageX - slider.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            slider.scrollLeft = scrollLeft - walk;
+        }, {passive: true});
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+        });
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map((p, i) => `
+                <div class="product-card" onclick="openModal(${i})">
+                    <div class="product-image-container">
+                        <span class="product-badge">${p.type}</span>
+                        <img src="${p.image}" alt="${p.name}" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-type">${p.type}</div>
+                        <h3 class="product-name">${p.name}</h3>
+                        <div class="product-price">$${formatPrice(p.price)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function formatPrice(price) {
+            return price.toLocaleString('es-CO');
+        }
+
+        function openModal(index) {
+            currentModalProduct = products[index];
+            currentQuantity = 1;
+            
+            document.getElementById('modalImage').src = currentModalProduct.image;
+            document.getElementById('modalType').textContent = currentModalProduct.type;
+            document.getElementById('modalTitle').textContent = currentModalProduct.name;
+            document.getElementById('modalPrice').textContent = `$${formatPrice(currentModalProduct.price)}`;
+            document.getElementById('modalDescription').textContent = currentModalProduct.description;
+            
+            updateQuantityDisplay();
+            
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeModalOnOverlay(e) {
+            if (e.target === e.currentTarget) closeModal();
+        }
+
+        function changeQuantity(delta) {
+            currentQuantity = Math.max(1, currentQuantity + delta);
+            updateQuantityDisplay();
+        }
+
+        function updateQuantityDisplay() {
+            document.getElementById('quantityValue').textContent = currentQuantity;
+            const total = currentModalProduct ? currentModalProduct.price * currentQuantity : 0;
+            document.getElementById('totalAmount').textContent = `$${formatPrice(total)}`;
+        }
+
+        function addToCartFromModal() {
+            if (!currentModalProduct) return;
+            
+            const existing = cart.find(item => item.id === currentModalProduct.id);
+            if (existing) {
+                existing.quantity += currentQuantity;
+            } else {
+                cart.push({...currentModalProduct, quantity: currentQuantity});
+            }
+            
+            saveCart();
+            updateCartUI();
+            closeModal();
+            showToast('Producto agregado ✓');
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            saveCart();
+            updateCartUI();
+        }
+
+        function clearCart() {
+            cart = [];
+            saveCart();
+            updateCartUI();
+        }
+
+        function saveCart() {
+            localStorage.setItem('lapisLazuliCart', JSON.stringify(cart));
+        }
+
+        function updateCartUI() {
+            const count = document.getElementById('cartCount');
+            const items = document.getElementById('cartItems');
+            const footer = document.getElementById('cartFooter');
+            const total = document.getElementById('cartTotal');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            count.textContent = totalItems;
+            count.classList.toggle('active', totalItems > 0);
+            
+            if (cart.length === 0) {
+                items.innerHTML = `
+                    <div class="cart-empty">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🛒</div>
+                        <p>Tu carrito está vacío</p>
+                    </div>
+                `;
+                footer.style.display = 'none';
+            } else {
+                items.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.image}" class="cart-item-image">
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">$${formatPrice(item.price)}</div>
+                            <div class="cart-item-qty">Cant: ${item.quantity}</div>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart(${item.id})">🗑️</button>
+                    </div>
+                `).join('');
+                
+                const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                total.textContent = `$${formatPrice(cartTotal)}`;
+                footer.style.display = 'block';
+            }
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+            document.body.style.overflow = document.getElementById('cartSidebar').classList.contains('active') ? 'hidden' : '';
+        }
+
+        function buyNowWhatsApp() {
+            if (!currentModalProduct) return;
+            const total = currentModalProduct.price * currentQuantity;
+            const msg = `Hola Lapis Lazuli, quiero pedir:\n\n📿 ${currentModalProduct.name}\n💰 $${formatPrice(currentModalProduct.price)} x ${currentQuantity}\n💵 Total: $${formatPrice(total)}`;
+            window.open(`https://wa.me/573136846940?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) return;
+            let msg = 'Hola Lapis Lazuli, quiero pedir:\n\n';
+            let total = 0;
+            cart.forEach((item, i) => {
+                const sub = item.price * item.quantity;
+                total += sub;
+                msg += `${i+1}. ${item.name} x${item.quantity} - $${formatPrice(sub)}\n`;
+            });
+            msg += `\n💵 TOTAL: $${formatPrice(total)}`;
+            window.open(`https://wa.me/573136846940?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({behavior: 'smooth'});
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                if (document.getElementById('cartSidebar').classList.contains('active')) toggleCart();
+            }
+        });
+    </script>
+</body>
+</html>
