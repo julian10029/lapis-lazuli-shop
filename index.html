@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TOPI D&J – Yogurt Griego</title>
+<title>TOPYC D&J – Yogurt Griego</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -267,19 +267,32 @@
   .hero-dot.active { background: #fff; transform: scale(1.3); }
 
   /* ===== BOTTOM NAV ===== */
-  .bottomnav {
+  .bottomnav-wrap {
     position: fixed;
-    bottom: 14px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 0;
+    left: 0;
+    right: 0;
     z-index: 100;
-    background: #fff;
-    border-radius: 50px;
-    padding: 10px 18px;
-    box-shadow: 0 6px 32px rgba(0,0,0,0.14);
     display: flex;
-    gap: 4px;
+    justify-content: center;
+    padding: 0 12px 16px;
+    pointer-events: none;
   }
+  .bottomnav {
+    background: #1c1a2e;
+    border-radius: 50px;
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(80,20,120,0.28);
+    border: 1px solid rgba(255,255,255,0.07);
+    pointer-events: all;
+  }
+
   .bnav-btn {
     display: flex;
     flex-direction: column;
@@ -288,29 +301,76 @@
     background: none;
     border: none;
     cursor: pointer;
-    padding: 8px 14px;
+    padding: 6px 10px;
     border-radius: 40px;
-    transition: background 0.2s;
-    color: var(--subtext);
+    color: #8a7aaa;
     font-family: 'Nunito', sans-serif;
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
+    position: relative;
+    flex: 1;
+    transition: color 0.25s;
   }
-  .bnav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; }
-  .bnav-btn:hover, .bnav-btn.active {
-    background: var(--red);
-    color: #fff;
+
+  .bnav-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
+    border: 2px solid transparent;
   }
+
+  .bnav-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke: #8a7aaa;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.25s;
+  }
+
+  .bnav-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.25s;
+    margin-top: 1px;
+  }
+
+  /* Active state */
+  .bnav-btn.active {
+    color: #e08bd0;
+  }
+  .bnav-btn.active .bnav-icon-wrap {
+    background: linear-gradient(135deg, #c0392b 0%, #8e44ad 100%);
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: 0 4px 18px rgba(180,50,130,0.45);
+    transform: translateY(-12px) scale(1.08);
+  }
+  .bnav-btn.active svg {
+    stroke: #fff;
+  }
+  .bnav-btn.active .bnav-dot {
+    background: #c0392b;
+  }
+
+  /* Badge count */
   .bnav-btn[data-count] {
     position: relative;
   }
   .bnav-btn[data-count]::after {
     content: attr(data-count);
     position: absolute;
-    top: 4px;
-    right: 6px;
+    top: 0px;
+    right: 4px;
     min-width: 18px;
     height: 18px;
     padding: 0 5px;
@@ -322,6 +382,7 @@
     font-size: 0.65rem;
     font-weight: 800;
     border-radius: 999px;
+    z-index: 2;
   }
 
   .products-grid {
@@ -411,7 +472,6 @@
     color: #f0eded;
   }
   body.dark-mode .topnav,
-  body.dark-mode .bottomnav,
   body.dark-mode .modal,
   body.dark-mode .product-card,
   body.dark-mode .section,
@@ -420,8 +480,7 @@
     background: #1f1f1f;
     color: #f4f4f;
   }
-  body.dark-mode .topnav,
-  body.dark-mode .bottomnav {
+  body.dark-mode .topnav {
     box-shadow: 0 2px 16px rgba(0,0,0,0.35);
   }
   body.dark-mode .slide-info,
@@ -521,7 +580,6 @@
     padding: 0;
   }
 
-  /* Left: image + ingredients */
   .modal-left {
     flex: 1.1;
     min-width: 0;
@@ -573,7 +631,6 @@
     font-style: italic;
   }
 
-  /* Right: size selector + qty + total */
   .modal-right {
     flex: 1;
     padding: 20px 18px 10px 50px;
@@ -583,7 +640,6 @@
     min-width: 0;
   }
 
-  /* Size selector */
   .size-selector {
     display: flex;
     flex-direction: column;
@@ -606,21 +662,10 @@
     background: var(--green);
     color: #fff;
   }
-  .size-btn .size-icon {
-    font-size: 1.1rem;
-  }
-  .size-btn .size-label {
-    flex: 1;
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-align: left;
-  }
-  .size-btn .size-price {
-    font-size: 0.9rem;
-    font-weight: 800;
-  }
+  .size-btn .size-icon { font-size: 1.1rem; }
+  .size-btn .size-label { flex: 1; font-size: 0.9rem; font-weight: 700; text-align: left; }
+  .size-btn .size-price { font-size: 0.9rem; font-weight: 800; }
 
-  /* Qty */
   .qty-row {
     display: flex;
     align-items: center;
@@ -651,11 +696,7 @@
     font-weight: 800;
   }
 
-  .total-row {
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: var(--text);
-  }
+  .total-row { font-size: 1.05rem; font-weight: 800; color: var(--text); }
   .total-row span { color: var(--red); font-size: 1.25rem; }
 
   .pedido-btn {
@@ -680,15 +721,12 @@
   }
   .pedido-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(60,181,106,0.38); }
 
-  /* Full width pedido bottom */
-  .modal-pedido-wrap {
-    padding: 14px 20px 0;
-  }
+  .modal-pedido-wrap { padding: 14px 20px 0; }
 
-  /* ===== CARRITO SECTION ===== */
+  /* ===== SECTIONS ===== */
   .section {
     display: none;
-    padding: 80px 20px 100px;
+    padding: 80px 20px 110px;
     max-width: 520px;
     margin: 0 auto;
   }
@@ -720,11 +758,7 @@
     margin-bottom: 12px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   }
-  .cart-item-img {
-    width: 58px; height: 58px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
+  .cart-item-img { width: 58px; height: 58px; border-radius: 50%; object-fit: cover; }
   .cart-item-info { flex: 1; }
   .cart-item-info strong { font-size: 0.92rem; font-weight: 800; }
   .cart-item-info p { font-size: 0.78rem; color: var(--subtext); font-weight: 600; }
@@ -776,7 +810,6 @@
   }
   .cart-pedido-btn:hover { transform: translateY(-2px); }
 
-  /* Coming soon */
   .coming-soon {
     text-align: center;
     padding: 80px 20px;
@@ -796,8 +829,9 @@
     .modal-body { flex-direction: column; }
     .modal-img-bg img { position: static; margin: 16px auto 0; display: block; }
     .modal-right { padding: 16px 18px; }
-    .bottomnav { gap: 0; padding: 8px 8px; }
-    .bnav-btn { padding: 7px 10px; font-size: 0.55rem; }
+    .bottomnav-wrap { padding: 0 10px 12px; }
+    .bnav-btn { padding: 5px 6px; font-size: 0.52rem; }
+    .bnav-icon-wrap { width: 40px; height: 40px; }
   }
 </style>
 </head>
@@ -819,25 +853,17 @@
 
 <!-- HOME: HERO SLIDER -->
 <div id="section-home" class="hero" style="display:flex;">
-  <!-- BG -->
   <div class="hero-bg" id="heroBg"></div>
-
-  <!-- SLIDES -->
-  <div id="slidesWrap" style="position:absolute;inset:0;display:flex;align-items:center;">
-  </div>
-
-  <!-- Arrows -->
+  <div id="slidesWrap" style="position:absolute;inset:0;display:flex;align-items:center;"></div>
   <button class="hero-arrow left" onclick="changeSlide(-1)" aria-label="Anterior">&#8249;</button>
   <button class="hero-arrow right" onclick="changeSlide(1)" aria-label="Siguiente">&#8250;</button>
-
-  <!-- Dots -->
   <div class="hero-dots" id="heroDots"></div>
 </div>
 
 <!-- PRODUCTOS -->
 <div id="section-productos" class="section">
   <div class="section-title">Productos</div>
-  <p style="color:var(--subtext);text-align:center;max-width:520px;margin:0 auto 12px;">Explora nuestra carta completa de yogures griegos y elige tu favorito. Toca un producto para ver más detalles y realizar tu pedido por WhatsApp.</p>
+  <p style="color:var(--subtext);text-align:center;max-width:520px;margin:0 auto 12px;">Explora nuestra carta completa de yogures griegos y elige tu favorito.</p>
   <div class="products-grid" id="productsGrid"></div>
 </div>
 
@@ -873,7 +899,7 @@
 <div id="section-ajustes" class="section">
   <div class="section-title">Ajustes</div>
   <div class="coming-soon" style="padding:40px 20px 20px;">
-    <p style="max-width:420px;margin:0 auto 16px;">Activa modo oscuro para una experiencia más cómoda en ambientes con poca luz. También guardamos tu carrito para que no lo pierdas al recargar.</p>
+    <p style="max-width:420px;margin:0 auto 16px;">Activa modo oscuro para una experiencia más cómoda en ambientes con poca luz.</p>
     <button class="btn-primary" id="themeToggle" onclick="toggleTheme()">Activar modo oscuro</button>
   </div>
 </div>
@@ -894,28 +920,51 @@
 </div>
 
 <!-- BOTTOM NAV -->
-<nav class="bottomnav">
-  <button class="bnav-btn active" id="bnav-home" onclick="showSection('home',null,this)">
-    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Inicio
-  </button>
-  <button class="bnav-btn" id="bnav-productos" onclick="showSection('productos',null,this)">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-    Productos
-  </button>
-  <button class="bnav-btn" id="bnav-carrito" onclick="showSection('carrito',null,this)">
-    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-    Carrito
-  </button>
-  <button class="bnav-btn" id="bnav-contacto" onclick="showSection('contacto',null,this)">
-    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-    Contacto
-  </button>
-  <button class="bnav-btn" id="bnav-ajustes" onclick="showSection('ajustes',null,this)">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    Ajustes
-  </button>
-</nav>
+<div class="bottomnav-wrap">
+  <nav class="bottomnav">
+
+    <button class="bnav-btn active" id="bnav-home" onclick="showSection('home',null,this)">
+      <div class="bnav-icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      Inicio
+      <div class="bnav-dot"></div>
+    </button>
+
+    <button class="bnav-btn" id="bnav-productos" onclick="showSection('productos',null,this)">
+      <div class="bnav-icon-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      </div>
+      Productos
+      <div class="bnav-dot"></div>
+    </button>
+
+    <button class="bnav-btn" id="bnav-carrito" onclick="showSection('carrito',null,this)">
+      <div class="bnav-icon-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      </div>
+      Carrito
+      <div class="bnav-dot"></div>
+    </button>
+
+    <button class="bnav-btn" id="bnav-contacto" onclick="showSection('contacto',null,this)">
+      <div class="bnav-icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      Contacto
+      <div class="bnav-dot"></div>
+    </button>
+
+    <button class="bnav-btn" id="bnav-ajustes" onclick="showSection('ajustes',null,this)">
+      <div class="bnav-icon-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </div>
+      Ajustes
+      <div class="bnav-dot"></div>
+    </button>
+
+  </nav>
+</div>
 
 <!-- PRODUCT MODAL -->
 <div class="modal-overlay" id="modalOverlay">
@@ -960,7 +1009,6 @@
 </div>
 
 <script>
-// ===== DATA =====
 const productos = [
   {
     id: 1,
@@ -1069,13 +1117,11 @@ const STORAGE_KEY_CART = 'topi_cart';
 const STORAGE_KEY_THEME = 'topi_theme';
 let currentTheme = 'light';
 
-// ===== BUILD SLIDES =====
 function buildSlides() {
   const wrap = document.getElementById('slidesWrap');
   const dots = document.getElementById('heroDots');
   wrap.innerHTML = '';
   dots.innerHTML = '';
-
   productos.forEach((p, i) => {
     const div = document.createElement('div');
     div.className = 'slide' + (i === 0 ? ' active' : '');
@@ -1102,13 +1148,11 @@ function buildSlides() {
       </div>
     `;
     wrap.appendChild(div);
-
     const dot = document.createElement('div');
     dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
     dot.onclick = () => goSlide(i);
     dots.appendChild(dot);
   });
-
   updateBg();
 }
 
@@ -1137,9 +1181,7 @@ function loadCart() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY_CART);
     if (saved) cart = JSON.parse(saved);
-  } catch (err) {
-    cart = [];
-  }
+  } catch (err) { cart = []; }
 }
 
 function saveCart() {
@@ -1154,9 +1196,7 @@ function initTheme() {
       document.body.classList.toggle('dark-mode', currentTheme === 'dark');
     }
     updateThemeButton();
-  } catch (err) {
-    currentTheme = 'light';
-  }
+  } catch (err) { currentTheme = 'light'; }
 }
 
 function toggleTheme() {
@@ -1174,11 +1214,8 @@ function updateThemeButton() {
 function updateCartBadge() {
   const btn = document.getElementById('bnav-carrito');
   if (!btn) return;
-  if (cart.length > 0) {
-    btn.dataset.count = cart.length;
-  } else {
-    btn.removeAttribute('data-count');
-  }
+  if (cart.length > 0) btn.dataset.count = cart.length;
+  else btn.removeAttribute('data-count');
 }
 
 function updateBg() {
@@ -1201,8 +1238,7 @@ function changeSlide(dir) {
 
 function startAutoSlide() {
   autoTimer = setInterval(() => {
-    const next = Math.floor(Math.random() * productos.length);
-    goSlide(next);
+    goSlide(Math.floor(Math.random() * productos.length));
   }, 5000);
 }
 
@@ -1211,29 +1247,19 @@ function resetAutoSlide() {
   startAutoSlide();
 }
 
-// ===== SECTIONS =====
-function showSection(name, linkEl, bnavEl, scrollOnly) {
-  // Hide hero
+function showSection(name, linkEl, bnavEl) {
   document.getElementById('section-home').style.display = name === 'home' ? 'flex' : 'none';
   ['productos','eventos','bebidas','contacto','carrito','ajustes'].forEach(s => {
     const el = document.getElementById(`section-${s}`);
     if (el) el.classList.remove('active');
   });
-
   if (name !== 'home') {
     const el = document.getElementById(`section-${name}`);
     if (el) el.classList.add('active');
-  } else {
-    const homeProducts = document.getElementById('section-productos');
-    if (homeProducts) homeProducts.classList.add('active');
   }
   if (name === 'carrito') renderCart();
-
-  // Nav links active
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
   if (linkEl) linkEl.classList.add('active');
-
-  // Bnav active
   document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
   if (bnavEl) bnavEl.classList.add('active');
   else {
@@ -1243,24 +1269,18 @@ function showSection(name, linkEl, bnavEl, scrollOnly) {
   }
 }
 
-// ===== MODAL =====
 function openModal(idx) {
   modalProduct = productos[idx];
-  modalSize = Object.keys(modalProduct.precios)[0]; // Primer tamaño disponible
+  modalSize = Object.keys(modalProduct.precios)[0];
   modalQty = 1;
-
   document.getElementById('modalTitle').textContent = modalProduct.nombreCorto;
   document.getElementById('modalImg').src = modalProduct.imgUrl;
   document.getElementById('modalImgBg').style.background = modalProduct.bg;
-
-  // Ingredients
   document.getElementById('modalIngredients').innerHTML = `
     <p>Ingredientes:</p>
     <ul>${modalProduct.ingredientes.map(x=>`<li>${x}</li>`).join('')}</ul>
     <p class="yogurt-note">${modalProduct.nota}</p>
   `;
-
-  // Sizes
   const sizeWrap = document.getElementById('sizeSelector');
   sizeWrap.innerHTML = '';
   const sizeIcons = {"500ml": '🥤', "250ml": '🍵', "100g": '🍫', "Entero": '🍰', "Porción": '🥧'};
@@ -1271,10 +1291,8 @@ function openModal(idx) {
     btn.onclick = () => selectSize(sz);
     sizeWrap.appendChild(btn);
   });
-
   updateModalTotal();
   document.getElementById('qtyNum').textContent = 1;
-
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1308,22 +1326,12 @@ function updateModalTotal() {
   document.getElementById('modalTotal').textContent = `$${total.toLocaleString('es-CO')}`;
 }
 
-// ===== CART =====
 function addToCart() {
-  cart.push({
-    producto: modalProduct,
-    tamanio: modalSize,
-    cantidad: modalQty,
-    precio: modalProduct.precios[modalSize]
-  });
+  cart.push({ producto: modalProduct, tamanio: modalSize, cantidad: modalQty, precio: modalProduct.precios[modalSize] });
   saveCart();
   updateCartBadge();
   closeModal();
   showToast('¡Agregado al carrito! 🛒');
-}
-
-function showCartBadge() {
-  updateCartBadge();
 }
 
 function renderCart() {
@@ -1331,7 +1339,6 @@ function renderCart() {
   const totalBar = document.getElementById('cartTotalBar');
   const pedidoBtn = document.getElementById('cartPedidoBtn');
   const totalNum = document.getElementById('cartTotalNum');
-
   if (cart.length === 0) {
     list.innerHTML = `<div class="cart-empty">
       <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -1341,7 +1348,6 @@ function renderCart() {
     pedidoBtn.style.display = 'none';
     return;
   }
-
   let total = 0;
   list.innerHTML = '';
   cart.forEach((item, idx) => {
@@ -1359,7 +1365,6 @@ function renderCart() {
     `;
     list.appendChild(div);
   });
-
   totalBar.style.display = 'flex';
   pedidoBtn.style.display = 'flex';
   totalNum.textContent = `$${total.toLocaleString('es-CO')}`;
@@ -1370,18 +1375,6 @@ function removeCartItem(idx) {
   saveCart();
   updateCartBadge();
   renderCart();
-}
-
-function handleKeydown(e) {
-  if (e.key === 'Escape') {
-    closeModal();
-  }
-  if (e.key === 'ArrowRight') {
-    changeSlide(1);
-  }
-  if (e.key === 'ArrowLeft') {
-    changeSlide(-1);
-  }
 }
 
 function realizarPedidoCarrito() {
@@ -1404,12 +1397,11 @@ function realizarPedidoDirecto() {
   window.open(`https://wa.me/573136846940?text=${encodeURIComponent(msg)}`);
 }
 
-// ===== TOAST =====
 function showToast(msg) {
   const t = document.createElement('div');
   t.textContent = msg;
   Object.assign(t.style, {
-    position:'fixed', bottom:'90px', left:'50%', transform:'translateX(-50%)',
+    position:'fixed', bottom:'100px', left:'50%', transform:'translateX(-50%)',
     background:'#222', color:'#fff', padding:'10px 22px', borderRadius:'50px',
     fontFamily:'Nunito,sans-serif', fontWeight:'700', fontSize:'0.9rem',
     zIndex:'999', opacity:'1', transition:'opacity 0.5s', boxShadow:'0 4px 20px rgba(0,0,0,0.2)'
@@ -1418,7 +1410,12 @@ function showToast(msg) {
   setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 500); }, 2200);
 }
 
-// ===== INIT =====
+function handleKeydown(e) {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'ArrowRight') changeSlide(1);
+  if (e.key === 'ArrowLeft') changeSlide(-1);
+}
+
 loadCart();
 initTheme();
 buildSlides();
@@ -1429,4 +1426,4 @@ document.getElementById('section-home').style.display = 'flex';
 document.addEventListener('keydown', handleKeydown);
 </script>
 </body>
-</html>
+</html>    
