@@ -233,8 +233,9 @@
   }
   .btn-primary:active { transform: scale(0.96); }
   .btn-primary[disabled] {
-    opacity: 0.55; cursor: not-allowed;
-    background: rgba(255,255,255,0.18);
+    opacity: 1; cursor: not-allowed;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.65);
     box-shadow: none;
   }
   .btn-secondary {
@@ -254,7 +255,7 @@
     transition: background 0.2s;
   }
   .btn-secondary:active { background: rgba(255,255,255,0.28); }
-  .btn-secondary[disabled] { opacity: 0.55; cursor: not-allowed; }
+  .btn-secondary[disabled] { opacity: 1; cursor: not-allowed; }
 
   /* Arrow buttons */
   .hero-arrow {
@@ -434,7 +435,15 @@
   }
   .product-card:active { transform: scale(0.98); }
   .product-card-img {
-    display: none;
+    width: 90px;
+    min-height: 90px;
+    max-height: 90px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+    padding: 8px;
+    background: rgba(0,0,0,0.04);
+    border-radius: 16px 0 0 16px;
   }
   .product-card-body {
     padding: 16px 16px 14px;
@@ -497,7 +506,7 @@
     transition: transform 0.15s;
   }
   .card-btn:active { transform: scale(0.95); }
-  .card-btn[disabled] { opacity: 0.5; cursor: not-allowed; background: var(--gray); color: var(--subtext); }
+  .card-btn[disabled] { opacity: 0.78; cursor: not-allowed; background: var(--gray); color: var(--subtext); }
 
   /* Unavailable overlay */
   .product-unavailable::after {
