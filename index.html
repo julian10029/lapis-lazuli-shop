@@ -156,7 +156,7 @@
     animation: floatImg 3.5s ease-in-out infinite;
     object-fit: cover;
   }
-  .slide-img-wrap img:not(.granola-format) { border-radius: 50%; aspect-ratio: 1; }
+  .slide-img-wrap img:not(.granola-format) { border-radius: 0; }
   @keyframes floatImg {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-12px); }
@@ -166,7 +166,7 @@
   .slide-info {
     position: relative;
     z-index: 2;
-    background: linear-gradient(to top, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.35) 70%, transparent 100%);
+    background: transparent;
     padding: 40px 20px 20px;
     color: #fff;
   }
@@ -434,14 +434,10 @@
   }
   .product-card:active { transform: scale(0.98); }
   .product-card-img {
-    width: 110px;
-    min-height: 110px;
-    object-fit: cover;
-    flex-shrink: 0;
-    display: block;
+    display: none;
   }
   .product-card-body {
-    padding: 14px 14px 14px 14px;
+    padding: 16px 16px 14px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -1135,7 +1131,7 @@ const productos = [
     id: 2,
     nombre: "Yogurt Griego\nFrutos Amarillos",
     nombreCorto: "Yogurt Griego Frutos Amarillos",
-    ingredientes: ["Mango", "Piña", "Maracuyá", "Granola artesanal"],
+    ingredientes: ["Mango", "Piña", "Maracuyá", "Durazno", "Granola artesanal"],
     nota: "Yogurt griego natural",
     calorias: 175, proteina: 11,
     precios: { "250ml": 5500, "500ml": 6500 },
